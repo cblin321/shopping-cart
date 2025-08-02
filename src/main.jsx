@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'
@@ -7,7 +8,19 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import Shop from "./Shop/Shop"
 import Cart from "./components/Cart.jsx"
 
-console.log("fdjskfjkl")
+
+const [cart, setCart] = useState([])
+
+const updateCartQuantity = (id, sign) => {
+  setCart((oldCart) => {
+    const newVal = (oldCart[id] ?? 0) + sign
+    return {
+      ...oldCart,
+      id: newVal
+    }
+  })
+}
+
 const routes = [
     {
         path: "/",
@@ -16,15 +29,16 @@ const routes = [
 
     {
         path: "shop",
-        element: <Shop></Shop>
+        element: <Shop updateCartQuantity={updateCartQuantity}></Shop>
     },
 
     {
         path: "cart",
-        element: <Cart></Cart>
+        element: <Cart cart={cart} updateCartQuantity={updateCartQuantity}></Cart>
     }
 ]
 const router = createBrowserRouter(routes)
+
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
