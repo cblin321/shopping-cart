@@ -2,10 +2,10 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'
 import App from './App.jsx'
-import Hero from "./components/Hero/Hero" 
+import Hero from "./components/Hero.jsx" 
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import Shop from "./Shop/Shop"
-import Cart from "./components/Cart/Cart"
+import Cart from "./components/Cart.jsx"
 
 console.log("fdjskfjkl")
 const routes = [
@@ -28,7 +28,6 @@ const router = createBrowserRouter(routes)
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <p>fdjkslfjsl</p>
     <RouterProvider router={router}></RouterProvider>
   </StrictMode>,
 )
