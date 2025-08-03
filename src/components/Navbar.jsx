@@ -1,14 +1,17 @@
 import styled from "styled-components"
+import { Link } from "react-router-dom"
+
+const StyledNavbar = styled.nav`
+    display: flex;
+    justify-content: space-evenly;
+`
 function Navbar() {
-    const Navbar = styled.nav`
-        display: flex;
-        justify-content: space-evenly;
-    `
-    return <Navbar>
-        <a href="./">Home</a>
-        <a href="./shop">Products</a>
-        <a href="./cart">Cart</a>
-    </Navbar>
+
+    return <StyledNavbar>
+        <Link to="/">Home</Link>
+        <Link to="./shop">Products</Link>
+        <Link to="./cart">Cart</Link>
+    </StyledNavbar>
 }
 
 export default Navbar
