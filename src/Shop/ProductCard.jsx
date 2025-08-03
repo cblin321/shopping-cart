@@ -43,7 +43,7 @@ function ProductCard(props) {
         <ProductTitle>{title}</ProductTitle>
         <ProductRating>{rating.rate} - ({rating.count})</ProductRating>
         <ProductPrice>{price}</ProductPrice>
-        <AddBtn onClick={() => updateCartQuantity(title, id, 1)}>Add to Cart</AddBtn>
+        <AddBtn onClick={() => updateCartQuantity(title, id, 1, image)}>Add to Cart</AddBtn>
     </ProductContainer>
 
 
