@@ -4,6 +4,8 @@ import { Link } from "react-router-dom"
 const StyledNavbar = styled.nav`
     display: flex;
     justify-content: space-evenly;
+    position: sticky;
+    top: 0;
 `
 function Navbar() {
 

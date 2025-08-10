@@ -1,0 +1,55 @@
+:root {
+  --font-size-xs: 4px;
+  --font-size-sm: 8px;
+  --font-size-base: 12px;
+  --font-size-lg: 16px;
+  --font-size-xl: 24px;
+  --font-size-2xl: 32px;
+  --font-size-3xl: 48px;
+  --font-size-4xl: 64px;
+  --font-size-5xl: 96px;
+  --font-size-6xl: 128px;
+  --font-size-7xl: 192px;
+  --font-size-8xl: 256px;
+  --font-size-9xl: 384px;
+  --font-size-10xl: 512px;
+  --font-size-11xl: 640px;
+  --font-size-12xl: 768px;
+
+  --primary: #6b6c73;
+  --secondary: #95969b;
+  --tertiary: #c1c2c5;
+
+  --gray-900: hsl(235, 14%, 20%);
+  --gray-800: hsl(235, 17%, 35%);
+  --gray-700: hsl(235, 18%, 50%);
+  --gray-600: hsl(235, 19%, 60%);
+  --gray-500: hsl(235, 20%, 70%);
+  --gray-400: hsl(235, 22%, 75%);
+  --gray-300: hsl(235, 20%, 80%);
+  --gray-200: hsl(235, 15%, 85%);
+  --gray-100: hsl(235, 10%, 98%);
+}
+
+@font-face {
+  font-family: "inter";
+  src: url("assets/fonts/Inter/Inter-VariableFont.ttf");
+}
+
+body {
+  background-color: var(--gray-100);
+}
+
+html, button {
+  font-family: "inter";
+}
+
+p, h1, h2, body {
+    margin: 0;
+    padding: 0;
+}
+
+
+.lucide-shopping-cart {
+  font-size: var(--font-size-base);
+}

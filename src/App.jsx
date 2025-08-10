@@ -6,6 +6,7 @@ import Shop from "./Shop/Shop"
 import Cart from "./components/Cart.jsx"
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import AppLayout from './components/AppLayout.jsx'
+import { ThemeProvider } from 'styled-components'
 
 function App() {
 
@@ -14,6 +15,10 @@ function App() {
           path: "/",
           element: <AppLayout></AppLayout>,
           children: [
+            {
+              path: "/",
+              element: <Hero></Hero>
+            },
             {
                 path: "shop",
                 element: <Shop></Shop>
@@ -29,9 +34,56 @@ function App() {
   ]
 
   const router = createBrowserRouter(routes)
-  console.log("app reload")
+
+  const theme = {
+    fontSizes: {
+      xs: '4px',
+      sm: '8px',
+      base: '12px',
+      lg: '16px',
+      xl: '24px',
+      '2xl': '32px',
+      '3xl': '48px',
+      '4xl': '64px',
+      '5xl': '96px',
+      '6xl': '128px',
+      '7xl': '192px',
+      '8xl': '256px',
+      '9xl': '384px',
+      '10xl': '512px',
+      '11xl': '640px',
+      '12xl': '768px',
+    },
+    colors: {
+      primary: '#6b6c73',
+      secondary: '#95969b',
+      tertiary: '#c1c2c5',
+      background: '#f4f4f5',
+      accent: 'hsl(30, 34%, 95%)',
+      'accent-2': 'hsl(30, 34%, 85%)',
+      "gray-900": "hsl(235, 14%, 20%)",
+      "gray-800": "hsl(235, 17%, 35%)",
+      "gray-700": "hsl(235, 18%, 50%)",
+      "gray-600": "hsl(235, 19%, 60%)",
+      "gray-500": "hsl(235, 20%, 70%)",
+      "gray-400": "hsl(235, 22%, 75%)",
+      "gray-300": "hsl(235, 15%, 85%)",
+      "gray-200": "hsl(235, 10%, 88%)",
+      "gray-100": "hsl(235, 20%, 90%)",
+      "font-color-dark": "hsl(295, 5%, 98%)",
+      "accent-600": "hsl(223, 52%, 50%)",
+      "accent-500": "hsl(223, 55%, 60%)",
+      "star-color": "rgb(234, 177, 11)",
+    }
+  }
+
+
+
+
   return <>
-    <RouterProvider router={router}></RouterProvider>
+    <ThemeProvider theme={theme}>
+      <RouterProvider router={router}></RouterProvider>
+    </ThemeProvider>
   </>
 }
 

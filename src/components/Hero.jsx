@@ -1,5 +1,123 @@
-function Hero() {
-    return "hero"
+import styled, {keyframes} from "styled-components"
+import { accessTheme } from "../BaseStyles"
+import { ChevronDown, TextSearch } from "lucide-react"
+import HeroProductShowcase from "./HeroProductShowcase"
+import fashionShowcase from "../assets/fashion_showcase.png"
+import jewerlyShowcase from "../assets/jewelery_showcase.png"
+import techShowcase from "../assets/tech_showcase.png"
+
+const HeroContainer = styled.div`
+    --vertical-padding: ${accessTheme("fontSizes", "8xl")};
+    width: 100%;
+    display: grid;
+    grid-template-rows: ${accessTheme("fontSizes", "2xl")} ${accessTheme("fontSizes", "3xl")};
+    place-content: center;
+    height: 100vh;
+    text-align: center;
+    position: relative;
+    padding: var(--vertical-padding) var(--horizontal-padding) 
+        var(--vertical-padding) var(--horizontal-padding);
+`
+
+
+const HeroText = styled.h1`
+    font-size: ${accessTheme("fontSizes", "3xl")};
+`
+
+const HeroSubtitle = styled.h2`
+    font-size: ${accessTheme("fontSizes", "2xl")};
+`
+
+const bounce = keyframes`
+    0% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(10px);
+    }
+
+    75% {
+        transform: translateY(10px);
+    }
+
+    100% {
+        transform: translateY(0);
+    }
+`
+
+const StyledChevron = styled(ChevronDown)`
+    position: absolute;
+    bottom: 30px;
+    animation: ${bounce} 1s infinite alternate ease;
+    left: 50%;
+`
+
+const ShowcaseContainer = styled.div`
+    --horizontal-padding: ${accessTheme("fontSizes", "9xl")};
+    --vertical-padding: ${accessTheme("fontSizes", "4xl")};
+    display: flex;
+    justify-content: space-between;
+    padding: var(--vertical-padding) var(--horizontal-padding) var(--vertical-padding);
+    /* width: calc(100vw - calc(var(--horizontal-padding) * 2)); */
+`
+
+const showcaseData = [
+    {
+        title: "Jewlery",
+        id: 2,
+        subtitle: "Handcrafted Luxury",
+        name: "John Hardy Gold & Silver Naga Bracelet",
+        img: jewerlyShowcase,
+        rating: {
+            rate: 4.6,
+            count: 400
+        }
+    },
+    {
+        title: "Tech",
+        id: 1,
+        subtitle: "Latest Tech Gear",
+        name: "WD 4TB Gaming Drive",
+        img: techShowcase,
+        rating: {
+            rate: 4.8,
+            count: 400 
+        }
+    },
+    {
+        title: "Clothing",
+        id: 3,
+        subtitle: "Everyday Fashion",
+        name: "Mens Premium Slim Fit T-Shirt",
+        img: fashionShowcase,
+        rating: {
+            rate: 4.1,
+            count: 259,
+        }
+    }
+]
+
+
+
+
+function Hero({props}) {
+
+    return <>
+
+    <HeroContainer>
+        <HeroSubtitle>One stop shop for all your needs</HeroSubtitle>
+        <HeroText>Shop Name</HeroText>
+        <StyledChevron></StyledChevron>
+    </HeroContainer> 
+
+     <ShowcaseContainer>
+        {showcaseData.map((showcase, index) => {
+            return <HeroProductShowcase key={showcase.id} {...showcase}></HeroProductShowcase>
+        })} 
+    </ShowcaseContainer>
+
+    </>
 }
 
 export default Hero
