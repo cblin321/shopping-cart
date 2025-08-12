@@ -20,7 +20,7 @@ const ProductImgContainer = styled.div`
     justify-content: center;
     padding-top: ${accessTheme("fontSizes", "lg")};
     /* padding-bottom: ${accessTheme("fontSizes", "lg")}; */
-    /* z-index: -1; */
+    z-index: -1;
 `
 
 const ProductImg = styled.img`
@@ -83,7 +83,7 @@ const ProductContainer = styled.div`
     padding: 0 ${(props) => props.theme.fontSizes["2xl"]} 0 ${(props) => props.theme.fontSizes["2xl"]};
     position: relative;
     gap: ${accessTheme("fontSizes", "base")};
-    border: 1px solid ${accessTheme("colors", "tertiary")};
+    border: 1px solid ${accessTheme("colors", "gray-400")};
     max-height: ${(props) => props.theme.fontSizes["10xl"]};
     padding-bottom: ${accessTheme("fontSizes", "lg")};
     border-radius: ${accessTheme("fontSizes", "sm")};
@@ -115,18 +115,17 @@ function ProductCard(props) {
 
         return <QuantityContainer>
             <QuantityButton onClick={() => updateCartQuantity(
-                title, id, 1, image
+                title, id, 1, image, price
             )}>+</QuantityButton>
 
             <QuantityLabel>{cartQuantity}</QuantityLabel>
 
             <QuantityButton onClick={() => updateCartQuantity(
-                title, id, -1, image
+                title, id, -1, image, price
             )} disabled={cartQuantity <= 0}>-</QuantityButton>
         </QuantityContainer>
     }
 
-    console.log(cart)
 
     return <ProductContainer theme={theme}>
 
@@ -138,7 +137,7 @@ function ProductCard(props) {
         {/* <ProductRating>{rating.rate} - ({rating.count})</ProductRating> */}
         <ReviewStars rate={rating.rate} count={rating.count} id={id}></ReviewStars>
         <ProductPrice>${price}</ProductPrice>
-        <AddBtn onClick={() => updateCartQuantity(title, id, 1, image)}>
+        <AddBtn onClick={() => updateCartQuantity(title, id, 1, image, price)}>
             <ShoppingCart></ShoppingCart>
             Add to Cart
         </AddBtn>

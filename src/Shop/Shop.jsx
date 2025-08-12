@@ -25,7 +25,7 @@ function Shop() {
     const theme = useTheme()
     const {data, loading, error} = useProducts() 
     const {updateCartQuantity, cart} = useOutletContext()
-    console.log(data)
+    console.log(cart)
     if (loading) {
        return <p>Loading...</p> 
     }
@@ -35,7 +35,6 @@ function Shop() {
 
 
     return <>
-                <p>Shop</p>
             <ProductsContainer theme={theme}>
                 {
                     data.map(product => {

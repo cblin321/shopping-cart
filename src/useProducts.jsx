@@ -10,7 +10,11 @@ export const useProducts = () => {
             const controller = new AbortController()
             try {
                 const request = await fetch("https://fakestoreapi.com/products", controller.signal)
-                const data = await request.json()
+                let data = await request.json()
+                data = data.map(item => ({
+                    ...item,
+                    price: item.price.toFixed(2)
+                }))
                 setData(data)
             } catch(err) {
                 setError(err.message)

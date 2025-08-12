@@ -54,7 +54,7 @@ const StyledChevron = styled(ChevronDown)`
 `
 
 const ShowcaseContainer = styled.div`
-    --horizontal-padding: ${accessTheme("fontSizes", "9xl")};
+    --horizontal-padding: ${accessTheme("fontSizes", "8xl")};
     --vertical-padding: ${accessTheme("fontSizes", "4xl")};
     display: flex;
     justify-content: space-between;
