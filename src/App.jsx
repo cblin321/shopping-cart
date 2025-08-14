@@ -70,9 +70,9 @@ function App() {
       "gray-300": "hsl(235, 15%, 85%)",
       "gray-200": "hsl(235, 10%, 88%)",
       "gray-100": "hsl(235, 20%, 90%)",
-      "font-color-dark": "hsl(295, 5%, 98%)",
-      "accent-600": "hsl(223, 52%, 50%)",
-      "accent-500": "hsl(223, 55%, 60%)",
+      "font-color-dark": "hsl(263, 52%, 95%)",
+      "accent-600": "hsl(243, 52%, 50%)",
+      "accent-500": "hsl(243, 65%, 60%)",
       "star-color": "rgb(234, 177, 11)",
     }
   }

@@ -41,6 +41,12 @@ body {
   color: var(--gray-900);
 }
 
+a {
+  text-decoration: none;  
+  color: inherit;        
+  cursor: pointer;      
+}
+
 html, button {
   font-family: "inter";
 }
