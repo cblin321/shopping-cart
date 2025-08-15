@@ -1,6 +1,7 @@
 import { useState } from "react"
 import { createBrowserRouter, Outlet, RouterProvider } from 'react-router-dom'
 import Navbar from "./Navbar"
+import Footer from "./Footer"
 
 function AppLayout() {
     const [cart, setCart] = useState([])
@@ -34,9 +35,40 @@ function AppLayout() {
         })
     }
 
+    const footerInfo = [
+        {
+            header: "Shop Name",
+            content: [
+                "test"
+            ]
+        },
+
+        {
+            header: "Contact Us",
+            content: [
+                "Help center",
+                "Email",
+                "Phone"
+            ]
+        },
+
+        {
+            header: "Pages",
+            content: [
+                "Homepage",
+                "Products",
+                "Cart",
+            ]
+        },
+
+    ]
+
+    // console.log(footerInfo)
+
     return <>
         <Navbar cart={cart}></Navbar>
         <Outlet context={{cart, updateCartQuantity}}></Outlet>
+        <Footer footerInfo={footerInfo}></Footer>
     </>
 }
 

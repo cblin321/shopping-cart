@@ -15,8 +15,8 @@ const StyledNavbar = styled.nav`
     color: ${accessTheme("colors", "font-color-dark")};
     font-size: 20px;
     padding: var(--vertical-padding) 0 var(--vertical-padding);
-    box-shadow: hsla(0, 0%, 0%, .3) 0 ${accessTheme("fontSizes", "xs")}
-        6px 3px;
+    box-shadow: hsla(0, 0%, 0%, .5) 0 ${accessTheme("fontSizes", "xs")}
+        20px 3px;
 `
 
 const CartNavContainer = styled.div`
