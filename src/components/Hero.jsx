@@ -1,4 +1,5 @@
 import styled, {keyframes} from "styled-components"
+import { Link } from "react-router-dom"
 import { accessTheme } from "../BaseStyles"
 import { ChevronDown, TextSearch } from "lucide-react"
 import HeroProductShowcase from "./HeroProductShowcase"
@@ -99,7 +100,28 @@ const showcaseData = [
 ]
 
 
+const RedirectBtn = styled.button`
+    &:hover {
+        cursor: pointer;
+        transform: translateY(-5px);
+        box-shadow: hsla(243, 65%, 60%, .9) 0 0 70px -10px;
+    }
 
+    margin: auto;
+    margin-top: ${accessTheme("fontSizes", "4xl")};
+    font-weight: 500;
+    height: ${accessTheme("fontSizes", "4xl")};
+    background-color: ${accessTheme("colors", "accent-500")};
+    font-size: 20px;
+    width: 60%;
+    padding: ${accessTheme("fontSizes", "base")} ${accessTheme("fontSizes", "2xl")}
+        ${accessTheme("fontSizes", "base")};
+    color: ${accessTheme("colors", "font-color-dark")};
+    border: none;
+    border-radius: ${accessTheme("fontSizes", "sm")};
+    transform: translateY(0);
+    transition: box-shadow .2s ease-out, transform .2s ease-out;
+`
 
 function Hero({props}) {
 
@@ -109,7 +131,8 @@ function Hero({props}) {
         <HeroSubtitle>One stop shop for all your needs</HeroSubtitle>
         <HeroText>Shop Name</HeroText>
         <StyledChevron></StyledChevron>
-    </HeroContainer> 
+            <RedirectBtn><Link to="./shop">Shop Catalogue</Link></RedirectBtn>
+            </HeroContainer> 
 
      <ShowcaseContainer>
         {showcaseData.map((showcase, index) => {

@@ -3,6 +3,7 @@ import styled, {css} from "styled-components"
 import { accessTheme } from "../BaseStyles"
 
 const center = css`
+    display: flex !important;
     flex-direction: column;
     align-items: center;
     justify-content: center;
@@ -12,7 +13,7 @@ const CartContainer = styled.div`
     --sidebar-length: ${accessTheme("fontSizes", "8xl")};
     --horizontal-padding: ${accessTheme("fontSizes", "8xl")};
     --bottom-padding: ${accessTheme("fontSizes", "6xl")};
-    --top-padding: ${accessTheme("fontSizes", "7xl")};
+    --top-padding: ${accessTheme("fontSizes", "6xl")};
     padding: var(--top-padding) var(--horizontal-padding) 
         var(--bottom-padding);
     gap: ${accessTheme("fontSizes", "2xl")};

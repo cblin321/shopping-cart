@@ -35,7 +35,7 @@ function AppLayout() {
     }
 
     return <>
-        <Navbar></Navbar>
+        <Navbar cart={cart}></Navbar>
         <Outlet context={{cart, updateCartQuantity}}></Outlet>
     </>
 }

@@ -10,7 +10,7 @@ import { accessTheme } from "../BaseStyles"
 
 
 const ProductsContainer = styled.div`
-    --vertical-padding: ${(props) => props.theme.fontSizes["5xl"]};
+    --vertical-padding: ${(props) => props.theme.fontSizes["6xl"]};
     --horizontal-padding: ${accessTheme("fontSizes", "8xl")};
     display: grid;
     grid-template-columns : repeat(auto-fill, minmax(${(props) => props.theme.fontSizes["8xl"]}, 1fr));
