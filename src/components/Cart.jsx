@@ -20,10 +20,11 @@ const CartContainer = styled.div`
     ${(props) => props.$isEmpty && center}
     display: grid;
     grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: ${accessTheme("fontSizes", "xl")} 1fr;
     grid-template-areas: 
     "header header"
     "items sidebar";
-
+    min-height: 100vh;
 `
 
 const ItemsContainer = styled.div`
@@ -122,7 +123,9 @@ const SubTotal = styled.p`
 `
 
 const PageHeading = styled.h1`
-    font-size: ${accessTheme("fontSizes", "2xl")};
+    font-size: ${accessTheme("fontSizes", "xl")};
+    line-height: ${accessTheme("fontSizes", "xl")};
+    font-weight: 500;
     grid-area: header;
 `
 

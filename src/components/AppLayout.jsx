@@ -35,16 +35,17 @@ function AppLayout() {
         })
     }
 
-    const footerInfo = [
-        {
+    const brandingInfo = {
             header: "Shop Name",
             content: [
                 "test"
             ]
-        },
+    }
+
+    const footerSectionInfo = [
 
         {
-            header: "Contact Us",
+            header: "Contact us",
             content: [
                 "Help center",
                 "Email",
@@ -61,14 +62,24 @@ function AppLayout() {
             ]
         },
 
+        {
+            header: "About us",
+            content: [
+                "Team",
+                "Our Mission"
+            ]
+        }
+
     ]
+
+
 
     // console.log(footerInfo)
 
     return <>
         <Navbar cart={cart}></Navbar>
         <Outlet context={{cart, updateCartQuantity}}></Outlet>
-        <Footer footerInfo={footerInfo}></Footer>
+        <Footer brandingInfo={brandingInfo} footerSectionInfo={footerSectionInfo}></Footer>
     </>
 }
 
