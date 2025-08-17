@@ -32,12 +32,12 @@ const ProductImg = styled.img`
 
 const ProductTitle = styled.p`
     display: -webkit-box;
-    -webkit-line-clamp: 2;           /* Number of lines you want */
+    -webkit-line-clamp: 3;           /* Number of lines you want */
     -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis;
     width: ${(props) => props.theme.fontSizes["7xl"]};
-    font-size: ${accessTheme("fontSizes", "xl")};
+    font-size: 20px;
    color: ${accessTheme("colors", "gray-800")};
 `
 
@@ -47,7 +47,7 @@ const ProductRating = styled.p`
 `
 
 const ProductPrice = styled.p`
-   font-size: ${accessTheme("fontSizes", "lg")};
+   font-size: ${accessTheme("fontSizes", "xl")};
    color: ${accessTheme("colors", "gray-800")};
    /* margin-bottom: ${accessTheme("fontSizes", "lg")}; */
 `

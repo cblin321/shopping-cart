@@ -18,6 +18,7 @@ const HeroContainer = styled.div`
     position: relative;
     padding: var(--vertical-padding) var(--horizontal-padding) 
         var(--vertical-padding) var(--horizontal-padding);
+    
 `
 
 
@@ -60,6 +61,17 @@ const ShowcaseContainer = styled.div`
     display: flex;
     justify-content: space-between;
     padding: var(--vertical-padding) var(--horizontal-padding) var(--vertical-padding);
+
+    @media (max-width: 600px) {
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: ${accessTheme("fontSizes", "4xl")};
+        --vertical-padding: ${accessTheme("fontSizes", "5xl")};
+        --horizontal-padding: ${accessTheme("fontSizes", "xl")};
+        padding: var(--vertical-padding) var(--horizontal-padding)
+            var(--vertical-padding);
+    }
     /* width: calc(100vw - calc(var(--horizontal-padding) * 2)); */
 `
 

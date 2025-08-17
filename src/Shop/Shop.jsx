@@ -13,7 +13,8 @@ import Loading from "../components/Loading"
 const ProductsContainer = styled.div`
     --bottom-padding: ${(props) => props.theme.fontSizes["6xl"]};
     --top-padding: ${accessTheme("fontSizes", "xl")};
-    --horizontal-padding: ${accessTheme("fontSizes", "8xl")};
+    /* --horizontal-padding: ${accessTheme("fontSizes", "8xl")}; */
+    --horizontal-padding: 14%;
     display: grid;
     grid-template-columns : repeat(auto-fill, minmax(${(props) => props.theme.fontSizes["8xl"]}, 1fr));
     width: calc(100% - calc(2 * var(--horizontal-padding)));

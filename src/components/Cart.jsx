@@ -1,7 +1,6 @@
 import { useOutletContext } from "react-router-dom"
 import styled, {css} from "styled-components"
 import { accessTheme } from "../BaseStyles"
-import Loading from "./Loading"
 
 const center = css`
     display: flex !important;
@@ -13,6 +12,7 @@ const center = css`
 const CartContainer = styled.div`
     --sidebar-length: ${accessTheme("fontSizes", "8xl")};
     --horizontal-padding: ${accessTheme("fontSizes", "8xl")};
+        --horizontal-padding: 14%;
     --bottom-padding: ${accessTheme("fontSizes", "6xl")};
     --top-padding: ${accessTheme("fontSizes", "6xl")};
     padding: var(--top-padding) var(--horizontal-padding) 
@@ -26,13 +26,22 @@ const CartContainer = styled.div`
     "header header"
     "items sidebar";
     min-height: 100vh;
+
+    @media (max-width: 1000px) {
+        padding: var(--top-padding) var(--horizontal-padding) 
+            var(--bottom-padding);
+        display: flex;
+        flex-direction: column;
+    }
+
+
 `
 
 const ItemsContainer = styled.div`
     display: flex;
     flex-direction: column;
     gap: ${accessTheme("fontSizes", "base")};
-    width: 60%;
+    width: 100%;
     grid-area: items;
 `
 
@@ -42,9 +51,15 @@ const ItemCartContainer = styled.div`
     align-items: center;
     padding: var(--vertical-padding);
     gap: ${accessTheme("fontSizes", "xl")};
-    width: ${accessTheme("fontSizes", "11xl")};
+    /* width: ${accessTheme("fontSizes", "11xl")}; */
+    width: 40vw;
     border: 1px solid var(--gray-400);
     border-radius: ${accessTheme("fontSizes", "sm")};
+
+    @media (max-width: 1000px) {
+        width: 100%;
+    }
+
 `
 
 const QuantityLabel = styled.p`
@@ -54,6 +69,11 @@ const QuantityLabel = styled.p`
 const ItemName = styled.p`
     width: 18em;
     font-size: 20px;
+
+    @media (max-width: 600px) {
+        width: 12em;
+        font-size: ${accessTheme("fontSizes", "lg")};
+    }
 `
 
 const CartProductImg = styled.img`
@@ -121,11 +141,16 @@ const QuantityRemoveBtn = styled.button`
 
 const SubTotal = styled.p`
    font-size: ${accessTheme("fontSizes", "xl")};
+
+    @media (max-width: 1000px) {
+        font-size: 18px;
+        font-weight: 500px;
+    }
 `
 
 const PageHeading = styled.h1`
     font-size: ${accessTheme("fontSizes", "xl")};
-    line-height: ${accessTheme("fontSizes", "xl")};
+    line-height: ${accessTheme("fontSizes", "lg")};
     font-weight: 500;
     grid-area: header;
 `
@@ -157,6 +182,11 @@ const Sidebar = styled.div`
     padding: ${accessTheme("fontSizes", "xl")};
     gap: ${accessTheme("fontSizes", "base")};
     grid-area: sidebar;
+
+    @media (max-width: 1000px) {
+        width: 100%;
+        margin-top: ${accessTheme("fontSizes", "5xl")};
+    }
 `
 
 const SubtotalLabel = styled.p`
@@ -170,6 +200,8 @@ const SidebarSubtotal = styled.p`
 const SidebarHeader = styled.h1`
     grid-area: header;
     margin-bottom: ${accessTheme("fontSizes", "sm")};
+    font-weight: 500;
+    font-size: ${accessTheme("fontSizes", "xl")};
 `
 
 const ShippingLabel = styled.p`
@@ -199,6 +231,14 @@ const CheckoutBtn = styled.button`
     margin-top: ${accessTheme("fontSizes", "sm")};
     background-color: ${accessTheme("colors", "accent-500")};
     color: ${accessTheme("colors", "font-color-dark")};
+
+    @media (max-width: 1500px) {
+        font-size: ${accessTheme("fontSizes", "lg")};
+    }
+
+    @media (max-width: 700px) {
+        font-size: ${accessTheme("fontSizes", "base")};
+    }
 `
 
 const Divider = styled.span`
