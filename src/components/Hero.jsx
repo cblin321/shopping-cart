@@ -28,6 +28,12 @@ const HeroText = styled.h1`
 
 const HeroSubtitle = styled.h2`
     font-size: ${accessTheme("fontSizes", "2xl")};
+    background: linear-gradient(90deg,rgba(148, 87, 219, 1) 0%, rgba(203, 87, 219, 1) 65%, rgba(219, 87, 180, 1) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent; 
+    padding-bottom: 3em;
 `
 
 const bounce = keyframes`
