@@ -145,7 +145,7 @@ function Hero({props}) {
 
     return <>
 
-    <HeroContainer>
+    <HeroContainer role="main">
         <HeroSubtitle>One stop shop for all your needs</HeroSubtitle>
         <HeroText>Shop Name</HeroText>
         <StyledChevron></StyledChevron>
