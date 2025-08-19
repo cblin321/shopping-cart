@@ -119,6 +119,9 @@ const showcaseData = [
 
 
 const RedirectBtn = styled.button`
+`
+
+const ButtonLink = styled(Link)`
     &:hover {
         cursor: pointer;
         transform: translateY(-5px);
@@ -128,17 +131,19 @@ const RedirectBtn = styled.button`
     margin: auto;
     margin-top: ${accessTheme("fontSizes", "4xl")};
     font-weight: 500;
-    height: ${accessTheme("fontSizes", "4xl")};
+    height: ${accessTheme("fontSizes", "3xl")};
     background-color: ${accessTheme("colors", "accent-500")};
     font-size: 20px;
-    width: 60%;
-    padding: ${accessTheme("fontSizes", "base")} ${accessTheme("fontSizes", "2xl")}
-        ${accessTheme("fontSizes", "base")};
+    width: 50%;
+    padding: ${accessTheme("fontSizes", "base")} ${accessTheme("fontSizes", "2xl")} ${accessTheme("fontSizes", "base")};
     color: ${accessTheme("colors", "font-color-dark")};
     border: none;
     border-radius: ${accessTheme("fontSizes", "sm")};
     transform: translateY(0);
     transition: box-shadow .2s ease-out, transform .2s ease-out;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 `
 
 function Hero({props}) {
@@ -149,10 +154,10 @@ function Hero({props}) {
         <HeroSubtitle>One stop shop for all your needs</HeroSubtitle>
         <HeroText>Shop Name</HeroText>
         <StyledChevron></StyledChevron>
-            <RedirectBtn><Link to="./shop">Shop Catalogue</Link></RedirectBtn>
+            <ButtonLink to="./shop">Shop Catalogue</ButtonLink>
             </HeroContainer> 
 
-     <ShowcaseContainer>
+     <ShowcaseContainer role="complementary">
         {showcaseData.map((showcase, index) => {
             return <HeroProductShowcase key={showcase.id} {...showcase}></HeroProductShowcase>
         })} 

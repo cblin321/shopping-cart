@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import Navbar from './components/Navbar'
 import Hero from './components/Hero'
 import { useProducts } from './useProducts'
-import Shop from "./Shop/Shop"
+import Shop from "./components/Shop/Shop.jsx"
 import Cart from "./components/Cart.jsx"
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import AppLayout from './components/AppLayout.jsx'
