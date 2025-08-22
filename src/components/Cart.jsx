@@ -94,13 +94,13 @@ const QuantityAddBtn = styled.button`
         position: absolute;
         bottom: 17%;
         left: 30;
+        color: ${accessTheme("colors", "font-color-dark")};
     }
     position: relative;
    --side-length: ${accessTheme("fontSizes", "xl")};
    font-size: ${accessTheme("fontSizes", "lg")};
    font-weight: 500;
    background-color: ${accessTheme("colors", "accent-500")};
-   color: ${accessTheme("colors", "font-color-dark")};
    border: none;
    border-radius: ${accessTheme("fontSizes", "xs")};
    height: var(--side-length);
@@ -110,6 +110,7 @@ const QuantityAddBtn = styled.button`
    align-items: center;
    justify-content: center;
    line-height: 1;
+   color: transparent;
 `
 
 const QuantityRemoveBtn = styled.button`
@@ -118,6 +119,7 @@ const QuantityRemoveBtn = styled.button`
         position: absolute;
         bottom: 17%;
         left: 33%;
+        color: ${accessTheme("colors", "accent-500")};
     }
 
     position: relative;
@@ -128,7 +130,6 @@ const QuantityRemoveBtn = styled.button`
    font-weight: 500;
     background-color: transparent;
    border: 2px solid ${accessTheme("colors", "accent-500")};
-   color: ${accessTheme("colors", "accent-500")};
    border-radius: ${accessTheme("fontSizes", "xs")};
    height: var(--side-length);
    width: var(--side-length);
@@ -137,6 +138,7 @@ const QuantityRemoveBtn = styled.button`
    align-items: center;
    justify-content: center;
    line-height: 1;
+   color: transparent;
 `
 
 const SubTotal = styled.p`
@@ -258,7 +260,6 @@ const Divider = styled.span`
 
 function Cart() {
     const { updateCartQuantity, cart} = useOutletContext()
-
     return <>
         <CartContainer $isEmpty={cart.length === 0}>
         {!(cart.length === 0) && <PageHeading>Your Cart</PageHeading>}
@@ -269,17 +270,17 @@ function Cart() {
             </> : <>
                 <ItemsContainer>
                     {cart.map(item => <ItemCartContainer>
-                        <CartProductImg src={item.img}></CartProductImg>
+                        <CartProductImg alt={item.title} src={item.img}></CartProductImg>
                         <ItemName>{item.title}</ItemName>
                         <QuantityContainer>
                             <QuantityRemoveBtn onClick={() => updateCartQuantity(
                                 item.title, item.id, -1, item.img, item.price
-                            )} disabled={item.quantity <= 0}></QuantityRemoveBtn>
+                            )} disabled={item.quantity <= 0}>-</QuantityRemoveBtn>
 
                             <QuantityLabel>{item.quantity}</QuantityLabel>
                             <QuantityAddBtn onClick={() => updateCartQuantity(
                                 item.title, item.id, 1, item.img, item.price
-                            )}></QuantityAddBtn>
+                            )}>+</QuantityAddBtn>
 
                         </QuantityContainer>
                         <SubTotal>${(item.price * item.quantity).toFixed(2)}</SubTotal>
@@ -288,7 +289,7 @@ function Cart() {
 
             <Sidebar>
                     <SidebarHeader>Order Summary</SidebarHeader>
-                    <ItemTotalLabel>Items ({cart.length})</ItemTotalLabel>
+                    <ItemTotalLabel>Items ({cart.reduce((acc, curr) => acc + curr.quantity, 0)})</ItemTotalLabel>
                     <ItemTotal>${cart.reduce((prev, curr) => (prev + curr.quantity * curr.price), 0).toFixed(2)}</ItemTotal>
 
                     <ShippingLabel>Shipping</ShippingLabel>

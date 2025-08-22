@@ -4,8 +4,46 @@ import {within} from "@testing-library/dom"
 import { vi } from "vitest"
 import userEvent from '@testing-library/user-event';
 import App from "../src/App"
-import { MockItems } from './MockData';
+import { useProducts } from '../src/useProducts';
+import { useOutletContext } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 
+const getMockedItems = () => {
+   const mockedItems =   [
+        {
+            price: 2,
+            image: "/url1",
+            rating: {
+              rate: 3.2,
+              count: 21
+            },
+            title: "Title 1",
+            id: 1
+        },
+        {
+            price: 3,
+            image: "/url2",
+            rating: {
+              rate: 5.0,
+              count: 21
+            },
+            title: "Title 2",
+            id: 2
+        },
+        {
+            price: 10.29,
+            image: "/url3",
+            rating: {
+              rate: 5.0,
+              count: 20
+            },
+            title: "Title 3",
+            id: 3
+        }
+      ]
+
+      return mockedItems
+    }
 
 describe('hero page', () => {
   afterEach(() => {
@@ -86,17 +124,273 @@ describe('hero page', () => {
 describe('shop page', () => {
   beforeEach(() => {
     window.history.pushState({}, "", "/shop")
+    vi.clearAllMocks()
+    vi.resetModules()
   })
 
-  it("renders loading screen", () => {
-
+  it("renders loading screen", async () => {
+    vi.doMock("../src/useProducts.jsx", () => ({
+      useProducts: () => ({
+        data: {},
+        loading: true,
+        error: null
+        })
+      })
+    )
+    const { default: App} = await import("../src/App")
+    render(<App></App>)
+    expect(screen.getByText("Loading...")).toBeInTheDocument()
   })
 
   it("renders product info", () => {
-    vi.mock("./src/usePorudcts.jsx", {
-      data: MockItems,
-      loading: false,
-      error: null
+    const HoistedMockItems = vi.hoisted(() => {
+
+      const mockedItems =   [
+        {
+            price: 2,
+            image: "/url1",
+            rating: {
+              rate: 3.2,
+              count: 21
+            },
+            title: "Title 1",
+            id: 1
+        },
+        {
+            price: 3,
+            image: "/url2",
+            rating: {
+              rate: 5.0,
+              count: 21
+            },
+            title: "Title 2",
+            id: 2
+        },
+        {
+            price: 10.29,
+            image: "/url3",
+            rating: {
+              rate: 5.0,
+              count: 20
+            },
+            title: "Title 3",
+            id: 3
+        }
+      ]
+
+      return mockedItems
+    })
+    vi.mock("../src/useProducts.jsx", () => (
+      {
+        useProducts: () => {
+          return {
+            data: HoistedMockItems,
+            loading: false,
+            error: null
+          }
+        }
+      })
+  )
+
+    render(<App></App>)
+      const mockedItems = getMockedItems()
+      mockedItems.forEach(item => {
+        const itemName = screen.getByText(item.title)
+        const itemPrice = screen.getByText(`$${parseFloat(item.price).toFixed(2)}`)
+        const itemImg = screen.getByAltText(item.title)
+        expect(itemName).toBeInTheDocument()
+        expect(itemPrice).toBeInTheDocument()
+        expect(itemImg.src).toMatch(`${item.image}`)
+      })
+    
+  })
+
+
+})
+
+
+describe('cart page', () => {
+  beforeEach(() => {
+    window.history.pushState({}, "", "/cart")
+    vi.clearAllMocks()
+    vi.resetModules()
+  })
+
+  it("renders empty cart", () => {
+    const mockUseOutletContext = vi.fn()
+    const mockUpdateCartQuantity = vi.fn()
+    mockUseOutletContext.mockImplementation(() => {
+      return {
+        updateCartQuantity: mockUpdateCartQuantity,
+        cart: []
+      } 
+    })
+
+    vi.doMock("react-router-dom", async (importOriginal) => {
+      const original = await importOriginal()
+      return {
+        ...original,
+        useOutletContext: mockUseOutletContext
+      }
+    })
+
+    render(<App></App>)
+
+    const heading = screen.getByRole("heading", {name: /Your cart is empty/i})
+    expect(heading).toBeInTheDocument()
+  })
+
+  it("renders multiple items", async () => {
+    const mockUseOutletContext = vi.fn()
+    const mockUpdateCartQuantity = vi.fn()
+    const mockedItems = getMockedItems().map((item, index) => ({...item, quantity: index + 1, img: item.image}))
+    mockUseOutletContext.mockImplementation(() => {
+      return {
+        updateCartQuantity: mockUpdateCartQuantity,
+        cart: mockedItems
+      } 
+    })
+
+
+    vi.doMock("react-router-dom", async (importOriginal) => {
+      const original = await importOriginal()
+      return {
+        ...original,
+        useOutletContext: mockUseOutletContext
+      }
+    })
+
+    const { default: App } = await import("../src/App")
+
+    render(<App></App>)
+
+    mockedItems.forEach((item, index) => {
+      const title = screen.getByText(item.title)
+      const price = screen.getByText(`$${parseFloat(item.price * item.quantity).toFixed(2)}`)
+      const quantity = screen.getByText(item.quantity)
+      const img = screen.getByAltText(item.title)
+
+      expect(price).toBeInTheDocument()
+      expect(title).toBeInTheDocument()
+      expect(quantity).toBeInTheDocument()
+      expect(img.src).toMatch(item.image)
+
+    })
+
+  })
+
+  it("should increase quantity", async () => {
+    const mockUseOutletContext = vi.fn()
+    const mockUpdateCartQuantity = vi.fn()
+    
+    let setCartRef = null 
+
+    mockUpdateCartQuantity.mockImplementation((title, id, sign, img, price) => {
+      if (setCartRef) {
+        setCartRef((oldCart) => {
+          const itemIndex = oldCart.findIndex(item => item.id === id)
+          const newVal = (itemIndex === -1 ? 0 : oldCart[itemIndex].quantity) + sign
+          const newItem = {
+            title: title,
+            quantity: newVal,
+            price: price, 
+            id: id,
+            img: img,
+          }
+          const newCart = [...oldCart]
+          if (newVal === 0) {
+            newCart.splice(itemIndex, 1)
+            return newCart
+          }
+          if (itemIndex === -1)
+            newCart.push(newItem)
+          else 
+            newCart[itemIndex] = newItem
+          return newCart
+        })
+      }
+    })   
+
+    const mockedItems = getMockedItems().map((item, index) => ({
+      ...item, 
+      quantity: index + 1, 
+      img: item.image
+    }))
+
+  const TestWrapper = ({ children }) => {
+
+    const [cart, setCart] = useState(mockedItems)
+    setCartRef = setCart
+    // cartRef = cart
+    mockUseOutletContext.mockReturnValue({
+        cart: cart,
+        updateCartQuantity: mockUpdateCartQuantity
+      })
+      
+   
+
+    
+    
+    return children
+  }
+
+
+
+
+      vi.doMock("react-router-dom", async (importOriginal) => {
+        const original = await importOriginal()
+        return {
+          ...original,
+          useOutletContext: mockUseOutletContext
+        }
+      })
+
+    const { default: App } = await import("../src/App")
+
+
+    const { rerender } = render(<TestWrapper><App /></TestWrapper>)
+
+    const addBtn = screen.getAllByRole("button", {name: /\+/i})[0]
+    const itemQuantity = screen.getByText("1")
+    const totalPrice = screen.getAllByText(`$${parseFloat(mockedItems.reduce((acc, curr) =>
+       acc + curr.price * curr.quantity, 0)).toFixed(2)}`)[0]
+    const oldTotalPrice = parseFloat(totalPrice.textContent.substring(1))
+    const numCartItems = screen.getByText("Items (6)")
+    const user = userEvent.setup()
+    const itemPrice = screen.getByText(`$${parseFloat(2).toFixed(2)}`)
+    await user.click(addBtn)
+    // await user.click(addBtn)
+    await vi.waitFor(() => {
+      expect(mockUpdateCartQuantity).toHaveBeenCalled()
+    })
+    rerender(<TestWrapper><App></App></TestWrapper>)
+    // expect(itemPrice).toBeInTheDocument()
+    expect(`${totalPrice.textContent}`).toBe(`$${parseFloat(oldTotalPrice + 2)}`)
+    expect(itemQuantity.textContent).toBe("2")
+    expect(numCartItems.textContent).toBe("Items (7)")
+    expect(itemPrice.textContent).toBe(`$${parseFloat(4).toFixed(2)}`)
+
     })
   })
+    
+
+
+
+  describe('integration', () => {
+    it("updates nav based on user interaction", () => {
+      const mockOutletContext = vi.fn()
+      const mockUpdateCartQuantity = vi.fn()
+      mockOutletContext.mockImplementation(() => ({
+        updateCartQuantity: mockUpdateCartQuantity,
+        cart: []
+    }))
+    vi.doMock("react-router-dom", async () => {
+      const actual = await import("react-router-dom")
+      return {
+        ...actual,
+        useOutletContext: mockOutletContext,
+      }
+    })
+  })
+
 })
