@@ -1,6 +1,7 @@
 import { useOutletContext } from "react-router-dom"
 import styled, {css} from "styled-components"
 import { accessTheme } from "../BaseStyles"
+import Navbar from "./Navbar"
 
 const center = css`
     display: flex !important;
@@ -260,7 +261,9 @@ const Divider = styled.span`
 
 function Cart() {
     const { updateCartQuantity, cart} = useOutletContext()
+    console.log(cart)
     return <>
+        <Navbar cart={cart}></Navbar>
         <CartContainer $isEmpty={cart.length === 0}>
         {!(cart.length === 0) && <PageHeading>Your Cart</PageHeading>}
             {

@@ -77,8 +77,9 @@ function AppLayout() {
     // console.log(footerInfo)
 
     return <>
-        <Navbar cart={cart}></Navbar>
-        <Outlet context={{cart, updateCartQuantity}}></Outlet>
+        {/* <Navbar cart={cart}></Navbar> this is added to the return of each invididual page component for testing*/} 
+        <Outlet context={{cart, updateCartQuantity}}>
+        </Outlet>
         <Footer brandingInfo={brandingInfo} footerSectionInfo={footerSectionInfo}></Footer>
     </>
 }

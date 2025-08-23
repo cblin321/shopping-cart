@@ -63,10 +63,11 @@ const NavOption = styled(Link)`
 function Navbar({cart}) {
     const location = useLocation()
 
-    return <StyledNavbar>
+
+    return <StyledNavbar role="navigation">
         <NavOption $active={location.pathname === "/"} to="/">Home</NavOption>
-        <NavOption $active={location.pathname === "/shop"} to="./shop">Products</NavOption>
-        <NavOption $active={location.pathname === "/cart"} to="./cart">
+        <NavOption $active={location.pathname === "/shop"} to="/shop">Products</NavOption>
+        <NavOption $active={location.pathname === "/cart"} to="/cart" data-testid="cart-link">
             <CartNavContainer>
                 <CartQuantity>{cart.reduce((prev, curr) => (prev + curr.quantity), 0)}</CartQuantity>
                 <ShoppingCart></ShoppingCart>

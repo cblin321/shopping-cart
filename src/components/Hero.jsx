@@ -1,11 +1,12 @@
 import styled, {keyframes} from "styled-components"
-import { Link } from "react-router-dom"
+import { Link, useOutletContext } from "react-router-dom"
 import { accessTheme } from "../BaseStyles"
 import { ChevronDown, TextSearch } from "lucide-react"
 import HeroProductShowcase from "./HeroProductShowcase"
 import fashionShowcase from "../assets/fashion_showcase.png"
 import jewerlyShowcase from "../assets/jewelery_showcase.png"
 import techShowcase from "../assets/tech_showcase.png"
+import Navbar from "./Navbar"
 
 const HeroContainer = styled.div`
     --vertical-padding: ${accessTheme("fontSizes", "8xl")};
@@ -147,9 +148,11 @@ const ButtonLink = styled(Link)`
 `
 
 function Hero({props}) {
+    const {cart} = useOutletContext()
 
     return <>
 
+    <Navbar cart={cart}></Navbar>
     <HeroContainer role="main">
         <HeroSubtitle>One stop shop for all your needs</HeroSubtitle>
         <HeroText>Shop Name</HeroText>

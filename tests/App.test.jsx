@@ -279,7 +279,7 @@ describe('cart page', () => {
 
   })
 
-  it("should increase quantity", async () => {
+  it("should make updates when adjusting quantity", async () => {
     const mockUseOutletContext = vi.fn()
     const mockUpdateCartQuantity = vi.fn()
     
@@ -370,6 +370,8 @@ describe('cart page', () => {
     expect(numCartItems.textContent).toBe("Items (7)")
     expect(itemPrice.textContent).toBe(`$${parseFloat(4).toFixed(2)}`)
 
+    //TODO test for decreasing 
+
     })
   })
     
@@ -377,20 +379,124 @@ describe('cart page', () => {
 
 
   describe('integration', () => {
-    it("updates nav based on user interaction", () => {
-      const mockOutletContext = vi.fn()
+    beforeEach(() => {
+      vi.clearAllMocks()
+      vi.resetModules()
+    })
+
+
+    it("shoud update nav & cart based on interaction w/ shop page", async () => {
+      const user = userEvent.setup()
+      window.history.pushState({}, "", "/shop")
+      const mockUseProducts = vi.fn()
+      mockUseProducts.mockReturnValue({
+        data: getMockedItems(),
+        error: null,
+        loading: false
+      })
+
+      vi.doMock("../src/useProducts", () => {
+        return {
+          useProducts: mockUseProducts
+        }
+      })
+      let setCartRef;
+      const mockUseOutletContext = vi.fn()
       const mockUpdateCartQuantity = vi.fn()
-      mockOutletContext.mockImplementation(() => ({
+      mockUseOutletContext.mockImplementation(() => ({
         updateCartQuantity: mockUpdateCartQuantity,
         cart: []
-    }))
+      }))
+
+      mockUpdateCartQuantity.mockImplementation((title, id, sign, img, price) => {
+        if (setCartRef) {
+          setCartRef((oldCart) => {
+            const itemIndex = oldCart.findIndex(item => item.id === id)
+            const newVal = (itemIndex === -1 ? 0 : oldCart[itemIndex].quantity) + sign
+            const newItem = {
+              title: title,
+              quantity: newVal,
+              price: price, 
+              id: id,
+              img: img,
+            }
+            const newCart = [...oldCart]
+            if (newVal === 0) {
+              newCart.splice(itemIndex, 1)
+              return newCart
+            }
+            if (itemIndex === -1)
+              newCart.push(newItem)
+            else 
+              newCart[itemIndex] = newItem
+            return newCart
+          })
+        }
+    })   
+
+      
+
+    const TestWrapper = ({children}) => {
+      const [cart, setCart] = useState([])
+      setCartRef = setCart
+      mockUseOutletContext.mockReturnValue({
+        cart: cart,
+        updateCartQuantity: mockUpdateCartQuantity
+      })
+      return children
+
+    }
+
     vi.doMock("react-router-dom", async () => {
       const actual = await import("react-router-dom")
       return {
         ...actual,
-        useOutletContext: mockOutletContext,
+        useOutletContext: mockUseOutletContext,
       }
     })
+    const { default: App } = await import("../src/App")
+
+    const { rerender } = render(<TestWrapper><App></App></TestWrapper>)
+    const navContainer = screen.getByRole("navigation")
+    const buttons = screen.getAllByText("Add to Cart")
+    const navCartQuantity = within(navContainer).getByText("0")
+    const cartLink = screen.getByTestId("cart-link")
+
+    let i = 1
+    for (const button of buttons) {
+      for (let j = 0; j < i; j++) {
+        await user.click(button)
+        await vi.waitFor(() => {
+          expect(mockUpdateCartQuantity).toHaveBeenCalled()
+        })
+        }
+      rerender(<TestWrapper><App /></TestWrapper>) // Force re-render after each click
+      i++
+    }
+
+    rerender(<TestWrapper><App></App></TestWrapper>)
+    expect(navCartQuantity.textContent).toBe("6")
+
+    await user.click(cartLink)
+
+    expect(screen.getByText("Your Cart")).toBeInTheDocument()
+
+    expect(screen.getByText("1")).toBeInTheDocument()
+    expect(screen.getByText("2")).toBeInTheDocument()
+    expect(screen.getByText("3")).toBeInTheDocument()
+    expect(screen.getByText("6")).toBeInTheDocument()
+
+    expect(screen.getByText("Title 1")).toBeInTheDocument()
+    expect(screen.getByText("Title 2")).toBeInTheDocument()
+    expect(screen.getByText("Title 3")).toBeInTheDocument()
+
+    expect(screen.getAllByText("$38.87")).toHaveLength(2)
+
+    expect(screen.getAllByText("Items (6)")).toBeInTheDocument()
+
+
+
   })
+
 
 })
