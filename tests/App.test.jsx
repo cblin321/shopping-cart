@@ -5,7 +5,7 @@ import { vi } from "vitest"
 import userEvent from '@testing-library/user-event';
 import App from "../src/App"
 import { useProducts } from '../src/useProducts';
-import { useOutletContext } from 'react-router-dom';
+import { createMemoryRouter, RouterProvider } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 
 const getMockedItems = () => {
@@ -519,4 +519,43 @@ describe('cart page', () => {
   })
 
 
+})
+
+describe("navbar", () => {
+  it("should navigate page when links clicked", async () => {
+
+    const mockUseProducts = vi.fn()
+    mockUseProducts.mockReturnValue({
+      data: getMockedItems(),
+      error: null,
+      loading: false
+      
+    })
+
+    vi.doMock("../src/useProducts", () => {
+      return {
+        useProducts: mockUseProducts
+      }
+    })
+
+    const { default: App } = await import("../src/App")
+    const {rerender} = render(<App></App>)
+    const navContainer = screen.getByRole("navigation")
+    const user = userEvent.setup()
+    const productsLink = within(navContainer).getByText("Products")
+
+
+    const cartLink = within(navContainer).getByTestId("cart-link")
+
+    await user.click(cartLink)
+    expect(screen.getByText("Your Cart")).toBeInTheDocument()
+
+    await user.click(productsLink)
+    expect(screen.getByText("Catalogue")).toBeInTheDocument()
+
+    const homeLink = within(navContainer).getByText("Home")
+    await user.click(homeLink)
+
+    
+  })
 })
