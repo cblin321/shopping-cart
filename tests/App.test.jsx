@@ -1,6 +1,6 @@
-import { describe, it, expect, afterEach, beforeEach } from 'vitest';
+import { describe, it, expect, afterEach, beforeEach, test } from 'vitest';
 import { render, screen } from '@testing-library/react'
-import {within} from "@testing-library/dom"
+import {within, TestingLibraryElementError} from "@testing-library/dom"
 import { vi } from "vitest"
 import userEvent from '@testing-library/user-event';
 import App from "../src/App"
@@ -345,32 +345,52 @@ describe('cart page', () => {
         }
       })
 
-    const { default: App } = await import("../src/App")
+      const { default: App } = await import("../src/App")
 
 
-    const { rerender } = render(<TestWrapper><App /></TestWrapper>)
+      const { rerender } = render(<TestWrapper><App /></TestWrapper>)
 
-    const addBtn = screen.getAllByRole("button", {name: /\+/i})[0]
-    const itemQuantity = screen.getByText("1")
-    const totalPrice = screen.getAllByText(`$${parseFloat(mockedItems.reduce((acc, curr) =>
-       acc + curr.price * curr.quantity, 0)).toFixed(2)}`)[0]
-    const oldTotalPrice = parseFloat(totalPrice.textContent.substring(1))
-    const numCartItems = screen.getByText("Items (6)")
-    const user = userEvent.setup()
-    const itemPrice = screen.getByText(`$${parseFloat(2).toFixed(2)}`)
-    await user.click(addBtn)
-    // await user.click(addBtn)
-    await vi.waitFor(() => {
-      expect(mockUpdateCartQuantity).toHaveBeenCalled()
-    })
-    rerender(<TestWrapper><App></App></TestWrapper>)
-    // expect(itemPrice).toBeInTheDocument()
-    expect(`${totalPrice.textContent}`).toBe(`$${parseFloat(oldTotalPrice + 2)}`)
-    expect(itemQuantity.textContent).toBe("2")
-    expect(numCartItems.textContent).toBe("Items (7)")
-    expect(itemPrice.textContent).toBe(`$${parseFloat(4).toFixed(2)}`)
+      const addBtn = screen.getAllByRole("button", {name: /\+/i})[0]
+      const removeBtn = screen.getAllByRole("button", {name: /\-/i})[0]
 
-    //TODO test for decreasing 
+      const itemQuantity = screen.getByText("1")
+      const totalPrice = screen.getAllByText(`$${parseFloat(mockedItems.reduce((acc, curr) =>
+        acc + curr.price * curr.quantity, 0)).toFixed(2)}`)[0]
+      const oldTotalPrice = parseFloat(totalPrice.textContent.substring(1))
+      const numCartItems = screen.getByText("Items (6)")
+      const user = userEvent.setup()
+      const itemPrice = screen.getByText(`$${parseFloat(2).toFixed(2)}`)
+
+      await user.click(addBtn)
+      await vi.waitFor(() => {
+        expect(mockUpdateCartQuantity).toHaveBeenCalled()
+      })
+      rerender(<TestWrapper><App></App></TestWrapper>)
+      // expect(itemPrice).toBeInTheDocument()
+      expect(`${totalPrice.textContent}`).toBe(`$${parseFloat(oldTotalPrice + 2)}`)
+      expect(itemQuantity.textContent).toBe("2")
+      expect(numCartItems.textContent).toBe("Items (7)")
+      expect(itemPrice.textContent).toBe(`$${parseFloat(4).toFixed(2)}`)
+
+      await user.click(removeBtn)
+      rerender(<TestWrapper><App></App></TestWrapper>)
+      expect(`${totalPrice.textContent}`).toBe(`$${parseFloat(oldTotalPrice)}`)
+      expect(itemQuantity.textContent).toBe("1")
+      expect(numCartItems.textContent).toBe("Items (6)")
+      expect(itemPrice.textContent).toBe(`$${parseFloat(2).toFixed(2)}`)
+
+
+
+      await user.click(removeBtn)
+
+      rerender(<TestWrapper><App></App></TestWrapper>)
+
+      const getItemTitle = () => screen.getByText("Title 1")
+
+      expect(getItemTitle).toThrow("Unable to find an element with the text: Title 1.")
+
+      expect(`${totalPrice.textContent}`).toBe(`$${parseFloat(oldTotalPrice - 2)}`)
+      expect(numCartItems.textContent).toBe("Items (5)")
 
     })
   })
@@ -492,7 +512,7 @@ describe('cart page', () => {
 
     expect(screen.getAllByText("$38.87")).toHaveLength(2)
 
-    expect(screen.getAllByText("Items (6)")).toBeInTheDocument()
+    expect(screen.getByText("Items (6)")).toBeInTheDocument()
 
 
 

@@ -261,7 +261,6 @@ const Divider = styled.span`
 
 function Cart() {
     const { updateCartQuantity, cart} = useOutletContext()
-    console.log(cart)
     return <>
         <Navbar cart={cart}></Navbar>
         <CartContainer $isEmpty={cart.length === 0}>
